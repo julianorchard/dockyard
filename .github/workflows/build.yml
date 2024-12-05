@@ -59,3 +59,4 @@ name: 🛠️ Build Images
 on:
   push:
     branches: [main]
+  workflow_dispatch:

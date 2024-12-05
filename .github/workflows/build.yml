@@ -35,12 +35,12 @@ jobs:
           # Create SHA-versioned image
           docker buildx build \
             --platform $PLATFORMS \
+            --label ${{ steps.meta.outputs.labels }} \
             --tag "ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:${{ github.sha }}" \
             --push "${{ matrix.image_name }}/"
           # Create new latest image from SHA-versioned
           docker buildx imagetools create \
             -t ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:latest \
-            --label ${{ steps.meta.outputs.labels }} \
             ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:${{ github.sha }}
         if: github.repository == '${{ env.GH_USER }}/dockyard' && github.actor == '${{ env.GH_USER }}' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

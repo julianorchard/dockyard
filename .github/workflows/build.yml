@@ -24,21 +24,23 @@ jobs:
           username: ${{ env.GH_USER }}
           password: ${{ secrets.GITHUB_TOKEN }}
         if: github.repository == '${{ env.GH_USER }}/dockyard' && github.actor == '${{ env.GH_USER }}' && github.ref == 'refs/heads/main'
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ matrix.image_name }}
-        if: github.repository == '${{ env.GH_USER }}/dockyard' && github.actor == '${{ env.GH_USER }}' && github.ref == 'refs/heads/main'
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ matrix.image_name }}
+      #   if: github.repository == '${{ env.GH_USER }}/dockyard' && github.actor == '${{ env.GH_USER }}' && github.ref == 'refs/heads/main'
       - name: Build and push ${{ matrix.image_name }} image
         shell: bash
         run: |
-          single_label="$(sed 's/,/ /g' ${{ steps.meta.outputs.labels }} | awk '{print $1}')"
+          # TODO: Iterate over and add multiple tags here!
+          # single_label="$(sed 's/,/ /g' ${{ steps.meta.outputs.labels }} | awk '{print $1}')"
+          # --label "${single_label}" \
+          #
           # Create SHA-versioned image
           docker buildx build \
             --platform $PLATFORMS \
             --tag "ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:${{ github.sha }}" \
-            --label "${single_label}" \
             --push "${{ matrix.image_name }}/"
           # Create new latest image from SHA-versioned
           docker buildx imagetools create \

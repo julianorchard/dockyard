@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        image_name: [envsubst]
+        image_name: [envsubst, precommit-hadolint]
     name: ${{ matrix.image_name }}
     steps:
       - name: Checkout repository

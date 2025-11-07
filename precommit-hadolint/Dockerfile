@@ -10,7 +10,8 @@ ARG HADOLINT_INSTALL_PATH=/usr/local/bin
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        curl=8.14.1-2  && \
+        curl=8.14.1-2 \
+        git=1:2.47.3-0+deb13u1 && \
     curl "${HADOLINT_REPO_BASE_URL}/${HADOLINT_VERSION}/${HADOLINT_BINARY}" && \
     curl -sSL "${HADOLINT_REPO_BASE_URL}/${HADOLINT_VERSION}/${HADOLINT_BINARY}" \
       -o ${HADOLINT_INSTALL_PATH}/hadolint && \

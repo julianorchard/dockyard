@@ -5,15 +5,18 @@ env:
 
 jobs:
   pre_build:
+    outputs:
+      sha: ${{ steps.get-sha.outputs.sha }}
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 2
-
       - name: Get a short SHA
         run: |
           echo "sha=${GITHUB_SHA::8}" >> "${GITHUB_OUTPUT}"
+        id: get-sha
       - name: Get a matrix
         run: |
           # Get dirs (not .git* or .) to single line JSON list
@@ -31,6 +34,7 @@ jobs:
 
           echo "DEBUG: ${dirs}"
           echo "matrix=${dirs}" >> "${GITHUB_OUTPUT}"
+        id: get-matrix
     name: Enter The Matrix
     runs-on: ubuntu-latest
 

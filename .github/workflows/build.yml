@@ -40,7 +40,7 @@ jobs:
 
   build:
     needs: [pre_build]
-    if: ${{ needs.pre_build.outputs.matrix != '' }}
+    if: ${{ needs.pre_build.outputs.matrix != '[]' }}
     strategy:
       matrix:
         image_name: ${{ fromJSON(needs.pre_build.outputs.matrix) }}

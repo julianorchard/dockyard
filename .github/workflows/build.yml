@@ -4,13 +4,28 @@ env:
   PLATFORMS: linux/amd64,linux/arm64,linux/386,linux/arm/v7
 
 jobs:
-  build:
+  pre_build:
+    name: Enter The Matrix
+    steps:
+      - name: Get a short SHA
+        run: |
+          echo "sha=${GITHUB_SHA::8}" >> "${GITHUB_OUTPUT}"
+      - name: Get a matrix
+        run: |
+          # Get dirs (not .git* or .) to single line JSON list
+          dir_list_json="$(find . -maxdepth 1 -type d |
+            sed '/\.git/d;/\.$/d' | sed 's|^\./||' |
+            jq -R | jq -s | jq -c)"
+          echo "matrix=${dir_list_json}" >> "${GITHUB_OUTPUT}"
 
+  build:
+    needs: [pre_build]
     strategy:
       matrix:
-        image_name: [envsubst, precommit-hadolint, precommit-terraform]
+        image_name: >
+          ${{ fromJSON(needs.pre_build.outputs.matrix) }}
 
-    name: ${{ matrix.image_name }}
+    name: Build ${{ matrix.image_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +58,7 @@ jobs:
           push: true
           tags: >
             ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:latest,
-            ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:${{ github.sha }}
+            ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:${{ needs.pre_build.outputs.sha }}
           platforms: ${{ env.PLATFORMS }}
           cache-from: type=registry,ref=ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:cache
           cache-to: type=registry,ref=ghcr.io/${{ env.GH_USER }}/${{ matrix.image_name }}:cache,mode=max

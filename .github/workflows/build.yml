@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        image_name: [envsubst, precommit-hadolint]
+        image_name: [envsubst, precommit-hadolint, precommit-terraform]
 
     name: ${{ matrix.image_name }}
     steps:

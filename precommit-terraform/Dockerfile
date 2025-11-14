@@ -13,7 +13,8 @@ RUN apt-get update \
         git=1:2.47.3-0+deb13u1 \
         unzip=6.0-29 \
     && curl -sSL "${TF_RELEASE_BASE_URL}" \
-        -o "${TF_INSTALL_PATH}/tf.zip"
+        -o "${TF_INSTALL_PATH}/tf.zip" \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR $TF_INSTALL_PATH
 
@@ -22,8 +23,7 @@ RUN unzip tf.zip \
     && pip install --no-cache-dir pre-commit==4.3.0 \
     && apt-get purge -y \
         curl \
-        unzip \
-    && rm -rf /var/lib/apt/lists/*
+        unzip
 
 WORKDIR /workspace
 

@@ -17,7 +17,8 @@ RUN apt-get update \
       -o ${HADOLINT_INSTALL_PATH}/hadolint \
     && chmod +x ${HADOLINT_INSTALL_PATH}/hadolint \
     && pip install --no-cache-dir pre-commit==4.3.0 \
-    && apt-get purge -y curl \
+    && apt-get purge -y \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace

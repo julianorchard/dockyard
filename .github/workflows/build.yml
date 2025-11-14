@@ -5,7 +5,6 @@ env:
 
 jobs:
   pre_build:
-    name: Enter The Matrix
     steps:
       - name: Get a short SHA
         run: |
@@ -26,6 +25,8 @@ jobs:
             jq -R | jq -s | jq -c)"
 
           echo "matrix=${dirs}" >> "${GITHUB_OUTPUT}"
+    name: Enter The Matrix
+    runs-on: ubuntu-latest
 
   build:
     needs: [pre_build]

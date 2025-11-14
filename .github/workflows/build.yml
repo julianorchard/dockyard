@@ -29,6 +29,7 @@ jobs:
             sort -u | grep -Fx "${docker_dirs}" |
             jq -R | jq -s | jq -c)"
 
+          echo "DEBUG: ${dirs}"
           echo "matrix=${dirs}" >> "${GITHUB_OUTPUT}"
     name: Enter The Matrix
     runs-on: ubuntu-latest
@@ -38,8 +39,7 @@ jobs:
     if: ${{ needs.pre_build.outputs.matrix != '' }}
     strategy:
       matrix:
-        image_name: >
-          ${{ fromJSON(needs.pre_build.outputs.matrix) }}
+        image_name: ${{ fromJSON(needs.pre_build.outputs.matrix) }}
 
     name: Build ${{ matrix.image_name }}
     steps:

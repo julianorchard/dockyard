@@ -6,6 +6,11 @@ env:
 jobs:
   pre_build:
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
       - name: Get a short SHA
         run: |
           echo "sha=${GITHUB_SHA::8}" >> "${GITHUB_OUTPUT}"
@@ -38,7 +43,7 @@ jobs:
     name: Build ${{ matrix.image_name }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 

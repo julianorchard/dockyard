@@ -13,10 +13,19 @@ jobs:
       - name: Get a matrix
         run: |
           # Get dirs (not .git* or .) to single line JSON list
-          dir_list_json="$(find . -maxdepth 1 -type d |
-            sed '/\.git/d;/\.$/d' | sed 's|^\./||' |
+          docker_dirs="$(find . -maxdepth 1 -type d |
+            sed '/\.git/d;/\.$/d' | sed 's|^\./||')"
+
+          # Detect dirs with changes (these can be nested but we don't care)
+          git_changes="$(git diff --name-only HEAD~1 HEAD |
+            grep "/" | xargs dirname)"
+
+          # Filter using `-Fx` to ensure a match of ${docker_dirs}
+          dirs="$(echo "${git_changes}" |
+            sort -u | grep -Fx "${docker_dirs}" |
             jq -R | jq -s | jq -c)"
-          echo "matrix=${dir_list_json}" >> "${GITHUB_OUTPUT}"
+
+          echo "matrix=${dirs}" >> "${GITHUB_OUTPUT}"
 
   build:
     needs: [pre_build]

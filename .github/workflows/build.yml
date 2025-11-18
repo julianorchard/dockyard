@@ -19,7 +19,8 @@ jobs:
         id: get-sha
       - name: Get a matrix
         run: |
-          # Get dirs (not .git* or .) to single line JSON list
+          # TODO: use -not -path "./directory/*"
+          # Get dirs (not .git* or .)
           docker_dirs="$(find . -maxdepth 1 -type d |
             sed '/\.git/d;/\.$/d' | sed 's|^\./||')"
 

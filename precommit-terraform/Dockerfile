@@ -23,7 +23,6 @@ RUN unzip "${TF_ZIP}" \
     && chmod +x terraform \
     && pip install --no-cache-dir pre-commit==4.3.0 \
     && apt-get purge -y \
-        curl \
         unzip
 
 WORKDIR /workspace

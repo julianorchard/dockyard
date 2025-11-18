@@ -10,8 +10,9 @@ ARG TF_ZIP=tf.zip
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        curl=8.14.1-2 \
+        curl=8.14.1-2+deb13u2 \
         git=1:2.47.3-0+deb13u1 \
+        jq=1.7.1-6+deb13u1 \
         unzip=6.0-29 \
     && curl -sSL "${TF_RELEASE_BASE_URL}" \
         -o "${TF_INSTALL_PATH}/${TF_ZIP}" \

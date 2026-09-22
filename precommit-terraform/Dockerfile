@@ -3,8 +3,8 @@ FROM python:3.12-slim
 LABEL org.opencontainers.image.authors="Julian Orchard <hello@julianorchard.co.uk>"
 LABEL org.opencontainers.image.source=https://github.com/julianorchard/dockyard
 
-ARG TF_RELEASE_BASE_URL=https://releases.hashicorp.com/terraform/1.13.5/terraform_1.13.5_linux_amd64.zip
-ARG TF_VERSION=1.13.5
+ARG TF_RELEASE_BASE_URL=https://releases.hashicorp.com/terraform/1.15.8/terraform_1.15.8_linux_amd64.zip
+ARG TF_VERSION=1.15.8
 ARG TF_INSTALL_PATH=/usr/local/bin
 ARG TF_ZIP=tf.zip
 ARG GO_VERSION=1.21.7
